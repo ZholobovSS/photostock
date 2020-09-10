@@ -37,7 +37,14 @@ const star = async (req, res) => {
   return res.sendStatus(403)
 }
 
-const deleteImg = async (req, res) => res.SendStatus(200)
+const deleteImg = async (req, res) => {
+  if (req.body.id && req.user.id) {
+    const result = await Img.remove(req.body.id, req.user.id)
+    return result === 'BAD USER' ? res.sendStatus(403)
+      : result === 'OK' ? res.sendStatus(200) : res.sendStatus(500)
+  }
+  res.sendStatus(403)
+}
 
 module.exports = {
   uploadMulter,

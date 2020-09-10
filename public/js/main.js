@@ -4,30 +4,6 @@ const container = document.querySelector('[data-container]')
 
 const ws = new WebSocket(window.location.origin.replace('http', 'ws'))
 
-const renderImg = (data) => {
-  let result = `<div data-img="${data.message.file.id}" class="col-md-4">
-  <div class="card mb-4 shadow-sm">
-    <img class="bd-placeholder-img card-img-top" src="/img/${data.message.file.path}" width="100%" height="225" alt="sometext">
-    <div class="card-body">
-      <p class="card-text">${data.message.file.description}</p>
-      <div class="d-flex justify-content-between align-items-center">`
-  if (data.userID === data.message.file.userID) {
-    result += '<div data-type="DELETE" class="btn-group"><button type="button" class="btn btn-sm btn-outline-secondary">Delete</button></div>'
-  }
-  result += `<small data-type="STAR" class="stars text-muted">${data.message.file.raiting}</small></div></div></div></div>`
-  return result
-}
-
-const updatePhotoRaiting = (id) => {
-  const element = document.querySelector('[data-container]').querySelector(`[data-img="${id}"] [data-type="STAR"]`)
-  element.innerText = +element.innerText + 1
-}
-
-const makeRaitingActive = (id) => {
-  const element = document.querySelector('[data-container]').querySelector(`[data-img="${id}"] [data-type="STAR"]`)
-  element.classList.add('active')
-}
-
 //
 // UPLOAD NEW PHOTO
 //
@@ -70,7 +46,6 @@ container.addEventListener('click', async (e) => {
     case 'STAR': {
       const img = e.target.closest('[data-img]')
 
-      console.log(e.target, img.dataset.img)
       const result = await fetch('/photos/star', {
         method: 'PATCH',
         headers: {
@@ -82,6 +57,24 @@ container.addEventListener('click', async (e) => {
         makeRaitingActive(img.dataset.img)
         ws.send(JSON.stringify({
           type: 'star',
+          id: img.dataset.img,
+        }))
+      }
+      break
+    }
+    case 'DELETE': {
+      const img = e.target.closest('[data-img]')
+
+      const result = await fetch('/photos/delete', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: img.dataset.img }),
+      })
+      if (result.status === 200) {
+        ws.send(JSON.stringify({
+          type: 'delete',
           id: img.dataset.img,
         }))
       }
@@ -116,7 +109,7 @@ ws.addEventListener('message', (event) => {
       updatePhotoRaiting(parseEvent.message.id)
       break
     case 'delete':
-      //
+      removePhotoById(parseEvent.message.id)
       break
     default:
       break

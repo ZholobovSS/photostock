@@ -16,5 +16,6 @@ module.exports = {
     'no-console': 'off',
     'no-restricted-syntax': 'off',
     'no-underscore-dangle': 'off',
+    'no-nested-ternary': 'off',
   },
 }
