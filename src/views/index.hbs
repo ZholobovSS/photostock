@@ -1,0 +1,27 @@
+<div class="d-flex justify-content-center album py-5 bg-light">
+  <div data-container class="container row">
+
+
+
+    {{#each images}}
+    <div data-img="{{this.id}}" class=" col-md-4">
+
+      <div class="card mb-4 shadow-sm">
+        <img class="bd-placeholder-img card-img-top" src="/img/{{this.path}}" width="100%" height="225" alt="sometext">
+        <div class="card-body">
+          <p class="card-text">{{this.description}}</p>
+          <div class="d-flex justify-content-between align-items-center">
+            {{#ifEquals this.user ../user.id}}
+            <div class="btn-group">
+              <button type="button" data-type="DELETE" class="btn btn-sm btn-outline-secondary">Delete</button>
+            </div>
+            {{/ifEquals}}
+            <small data-type="STAR" class="stars {{userLikePhoto}} text-muted">{{this.raiting}}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{/each}}
+
+  </div>
+</div>
