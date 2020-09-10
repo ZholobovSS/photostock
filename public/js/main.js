@@ -72,7 +72,7 @@ container.addEventListener('click', async (e) => {
 
       console.log(e.target, img.dataset.img)
       const result = await fetch('/photos/star', {
-        method: 'POST',
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },

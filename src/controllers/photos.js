@@ -37,8 +37,11 @@ const star = async (req, res) => {
   return res.sendStatus(403)
 }
 
+const deleteImg = async (req, res) => res.SendStatus(200)
+
 module.exports = {
   uploadMulter,
   upload,
   star,
+  deleteImg,
 }

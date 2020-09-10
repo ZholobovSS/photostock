@@ -5,6 +5,7 @@ const lib = require('../controllers/lib')
 const router = express.Router()
 
 router.post('/upload', lib.isAuthenticated, controller.uploadMulter.single('file'), controller.upload)
-router.post('/star', controller.star)
+router.patch('/star', lib.isAuthenticated, controller.star)
+router.delete('/delete', lib.isAuthenticated, controller.deleteImg)
 
 module.exports = router

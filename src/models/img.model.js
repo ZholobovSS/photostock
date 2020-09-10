@@ -18,11 +18,9 @@ imgShema.statics.star = async function (photoID, userID) {
     currentUser.like.push(photoID)
     await currentUser.save()
 
-    console.log(currentUser, currentImg)
     return true
   }
 
-  console.log(currentUser, currentImg)
   return false
 }
 
